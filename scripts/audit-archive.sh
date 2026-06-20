@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Quarterly archive audit.
+#
+# Moves learnings to archive/learnings/ when ALL of:
+#   - status: learning
+#   - occurrences: 1
+#   - learned date is more than THRESHOLD_DAYS ago
+#
+# Writes a human-readable report to $AUDIT_REPORT (default /tmp/audit-report.md)
+# so the GitHub Action can use it as the PR body. The file moves are real:
+# the PR contains actual `git mv`s. Merging accepts the archive; closing
+# preserves the learning.
+#
+# Local use: just run it. Cross-platform (GNU + BSD date).
+
+set -euo pipefail
+
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPORT="${AUDIT_REPORT:-/tmp/audit-report.md}"
+THRESHOLD_DAYS="${THRESHOLD_DAYS:-180}"
+
+cd "$REPO_DIR"
+
+# Cross-platform date parser (GNU date on Linux, BSD date on macOS).
+if date -d "2020-01-01" +%s >/dev/null 2>&1; then
+  parse_date() { date -d "$1" +%s; }
+else
+  parse_date() { date -j -f "%Y-%m-%d" "$1" +%s; }
+fi
+
+now_epoch=$(date +%s)
+candidates=()
+
+while IFS= read -r -d '' file; do
+  learned=$(awk '/^learned:/{print $2; exit}' "$file")
+  occurrences=$(awk '/^occurrences:/{print $2; exit}' "$file")
+  status=$(awk '/^status:/{print $2; exit}' "$file")
+
+  [[ "$status" != "learning" ]] && continue
+  [[ "$occurrences" != "1" ]] && continue
+  [[ -z "$learned" ]] && continue
+
+  learned_epoch=$(parse_date "$learned" 2>/dev/null || echo "")
+  [[ -z "$learned_epoch" ]] && continue
+
+  age_days=$(( (now_epoch - learned_epoch) / 86400 ))
+  if (( age_days > THRESHOLD_DAYS )); then
+    candidates+=("${file}|${age_days}")
+  fi
+done < <(find learnings -type f -name "*.md" ! -name "INDEX.md" ! -name "TEMPLATE.md" -print0)
+
+if (( ${#candidates[@]} == 0 )); then
+  echo "no candidates" > "$REPORT"
+  echo "no candidates this quarter; repo is healthy."
+  exit 0
+fi
+
+mkdir -p archive/learnings
+
+{
+  echo "# Quarterly archive audit"
+  echo
+  echo "Proposing to archive ${#candidates[@]} learning(s)."
+  echo
+  echo "Criteria: \`status: learning\`, \`occurrences: 1\`, \`learned\` older than ${THRESHOLD_DAYS} days."
+  echo
+  echo "## Moved"
+  echo
+  for c in "${candidates[@]}"; do
+    file="${c%|*}"
+    age="${c##*|}"
+    target="archive/learnings/$(basename "$file")"
+    git mv "$file" "$target"
+    echo "- \`$file\` → \`$target\` (age: ${age}d)"
+  done
+  echo
+  echo "## How to handle this PR"
+  echo
+  echo "- **Merge** if these learnings are truly stale."
+  echo "- **Close without merging** if any is still relevant. The file stays in \`learnings/\`."
+  echo "  Optionally bump its \`learned:\` field to today so this audit won't flag it next quarter."
+} > "$REPORT"
+
+echo "report at $REPORT; ${#candidates[@]} file(s) moved."
