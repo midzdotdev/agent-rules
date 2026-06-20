@@ -25,10 +25,8 @@ Once the immediate fix is applied, offer: *"Log this to `agent-rules`?"* On yes:
 3. Copy `learnings/TEMPLATE.md` → `learnings/$(date +%Y-%m-%d)-<slug>.md`
 4. Fill in: what was asked, what was wrong, the correction, and **why** the
    preferred way is better.
-5. Add a row to [`learnings/INDEX.md`](learnings/INDEX.md) (fill the **Applies**
-   topic — that's how the agent finds it later), and a link under **Recent
-   learnings** in `SKILL.md`. Keep that inline list to ~5: drop the oldest, which
-   stays findable via INDEX.
+5. Add it to the **Learnings** list in `SKILL.md`, with its topic — that's how
+   the agent finds it later.
 6. Commit (`learning: prefer X over Y`), push, `gh pr create --fill`.
 7. Drop the PR link in chat.
 
@@ -47,19 +45,20 @@ open a follow-up PR:
 1. Distil the entry into `rules/scoped/<topic>.md` — or `rules/always/` for a
    genuinely universal rule (be strict; see the always/ cap in `AGENTS.md`).
 2. Set the learning's `status: promoted`; leave the file as history.
-3. Add the "Promoted to" link in `learnings/INDEX.md`.
+3. In `SKILL.md`, remove it from **Learnings** and add the new rule under
+   **Always** / **Scoped**.
 
-`occurrences` is the evidence weight for that judgment, and it's load-bearing in
-automation: the archive audit only retires never-recurred learnings
-(`occurrences: 1`), sparing anything that has bitten twice or more.
+`occurrences` is the evidence weight for that judgment — recurred many times is a
+clear promote; recurred once but still marginal can wait.
 
 ## Seeding a rule directly
 
 Some rules are born as rules — lifted from an existing global config, not from a
 logged correction (the two seed rules came this way). Skip `learnings/` entirely:
-write straight to `rules/`, set `status: seeded`, and add no INDEX row (the INDEX
-tracks the corrections log, not rule provenance). Frontmatter, the anti-bloat
-checklist, and the dense-agent-docs standard still apply.
+write straight to `rules/`, list it under **Always** / **Scoped** in `SKILL.md`,
+and set `status: seeded`. It's not a correction, so it gets no **Learnings**
+entry. Frontmatter, the anti-bloat checklist, and the dense-agent-docs standard
+still apply.
 
 ## Anti-bloat checklist
 
@@ -84,7 +83,7 @@ description: ...              # one line; load-bearing for relevance ranking
 applies: code-style          # rough topic
 severity: preference         # preference | rule | hard-rule
 learned: 2026-06-20          # ISO date first added
-occurrences: 1               # bumped each recurrence; promotion evidence + archive-audit guard
+occurrences: 1               # bumped each recurrence; evidence for promotion
 status: learning             # learnings/: learning | promoted | deprecated · rules/: seeded
 ---
 ```
@@ -92,15 +91,8 @@ status: learning             # learnings/: learning | promoted | deprecated · r
 Body sections (the template enforces them): **The pattern** · **Why** ·
 **When this came up** · **When NOT to apply**.
 
-## Consistency check
+## Retiring a learning
 
-`scripts/check-consistency.sh` (run in CI on every push/PR via
-`.github/workflows/consistency.yml`) verifies internal links resolve, every
-learning has an INDEX row, and rule/learning files carry frontmatter. Run it
-locally before opening a PR.
-
-## Archive audit
-
-`.github/workflows/archive-audit.yml` runs quarterly and PRs stale learnings
-(criteria in `scripts/audit-archive.sh`) into `archive/`. Merge to accept;
-close to keep one alive — bump its `learned:` date so the next audit skips it.
+If a learning no longer holds, delete it (git keeps the history) or set
+`status: deprecated` and remove it from `SKILL.md`. No scheduled audit — prune
+by hand when you notice one.
