@@ -3,6 +3,17 @@
 Non-obvious decisions about how this repo is structured. Read before
 restructuring it (not before adding entries — that's `CONTRIBUTING.md`).
 
+## Rules vs. skills vs. learnings
+
+- **Rule** (`rules/`) — a standing preference that colours work continuously;
+  short, resident (always/) or topically loaded (scoped/).
+- **Skill** (`skills/`) — a procedure for a specific task, loaded on demand
+  when its trigger fires. Choose this over a rule when the guidance is a
+  multi-step method, not a one-line disposition. Each skill needs its own
+  symlink into `~/.claude/skills/` (see the nix flake).
+- **Learning** (`learnings/`) — a raw correction, append-only; promoted to a
+  rule once it recurs.
+
 ## `rules/always/` has a soft cap of ~5 files
 
 Each file here loads into every prompt's context budget. Promotion

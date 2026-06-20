@@ -12,6 +12,7 @@ corrections. Discovered by Claude Code as a skill via
 - `rules/` — curated, durable rules.
   - `always/` — universal; loaded every session.
   - `scoped/` — topic-specific; loaded when relevant.
+- `skills/` — task-triggered method guidance, each loaded on demand.
 - `learnings/` — append-only log of corrections. Promoted to `rules/` after recurrence.
 - `archive/` — superseded entries, kept for history.
 
