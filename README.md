@@ -1,12 +1,13 @@
 # agent-rules
 
-James's portable, agent-agnostic corpus of coding preferences, anti-patterns,
-and corrections. Read by AI coding assistants (Claude Code, Cursor, Aider,
-Codex, etc.) via the [`AGENTS.md`](AGENTS.md) convention.
+James's portable corpus of coding preferences, anti-patterns, and
+corrections. Discovered by Claude Code as a skill via
+[`SKILL.md`](SKILL.md).
 
 ## What lives here
 
-- [`AGENTS.md`](AGENTS.md) — entry point for AI tools. The map.
+- [`SKILL.md`](SKILL.md) — entry point for AI tools (the skill manifest and map).
+- [`AGENTS.md`](AGENTS.md) — architectural decisions; read before restructuring.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how new entries get added.
 - `rules/` — curated, durable rules.
   - `always/` — universal; loaded every session.
