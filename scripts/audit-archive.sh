@@ -56,24 +56,70 @@ if (( ${#candidates[@]} == 0 )); then
 fi
 
 mkdir -p archive/learnings
+index_file="learnings/INDEX.md"
+
+# 1. Move the stale learnings.
+moved=()  # entries: "src|target|age"
+for c in "${candidates[@]}"; do
+  file="${c%|*}"
+  age="${c##*|}"
+  target="archive/learnings/$(basename "$file")"
+  git mv "$file" "$target"
+  moved+=("${file}|${target}|${age}")
+done
+
+# 2. Repoint INDEX.md rows for moved learnings and mark them archived. The link
+#    target there is relative to learnings/, so it becomes ../archive/learnings/.
+for m in "${moved[@]}"; do
+  base="$(basename "${m%%|*}")"
+  esc="$(printf '%s' "$base" | sed 's#[][\.*^$]#\\&#g')"  # escape regex metachars for awk
+  awk -v lit="$base" -v rx="$esc" '
+    index($0, "](" lit ")") {
+      gsub("\\]\\(" rx "\\)", "](../archive/learnings/" lit ")")
+      sub(/\| learning \|/, "| archived |")
+    }
+    { print }
+  ' "$index_file" > "$index_file.tmp" && mv "$index_file.tmp" "$index_file"
+done
+git add "$index_file"
+
+# 3. Find any OTHER file still referencing a moved learning (e.g. SKILL.md's
+#    "Recent learnings" list). Those are curatorial — flag them, don't auto-edit.
+refs=""
+for m in "${moved[@]}"; do
+  base="$(basename "${m%%|*}")"
+  while IFS= read -r hit; do
+    hit="${hit#./}"
+    [[ "$hit" == archive/learnings/* ]] && continue  # the moved file itself
+    [[ "$hit" == "$index_file" ]] && continue         # auto-repointed above
+    refs+="- \`$hit\` references \`$base\`"$'\n'
+  done < <(grep -rlF --exclude-dir=.git "$base" . 2>/dev/null | sort -u)
+done
 
 {
   echo "# Quarterly archive audit"
   echo
-  echo "Proposing to archive ${#candidates[@]} learning(s)."
+  echo "Proposing to archive ${#moved[@]} learning(s)."
   echo
   echo "Criteria: \`status: learning\`, \`occurrences: 1\`, \`learned\` older than ${THRESHOLD_DAYS} days."
   echo
   echo "## Moved"
   echo
-  for c in "${candidates[@]}"; do
-    file="${c%|*}"
-    age="${c##*|}"
-    target="archive/learnings/$(basename "$file")"
-    git mv "$file" "$target"
+  for m in "${moved[@]}"; do
+    file="${m%%|*}"; rest="${m#*|}"; target="${rest%%|*}"; age="${rest##*|}"
     echo "- \`$file\` → \`$target\` (age: ${age}d)"
   done
   echo
+  echo "\`learnings/INDEX.md\` rows were repointed to the archive and marked \`archived\` automatically."
+  echo
+  if [[ -n "$refs" ]]; then
+    echo "## References to review"
+    echo
+    echo "These files still mention a moved learning — repoint or remove before merging:"
+    echo
+    printf '%s' "$refs"
+    echo
+  fi
   echo "## How to handle this PR"
   echo
   echo "- **Merge** if these learnings are truly stale."
@@ -81,4 +127,4 @@ mkdir -p archive/learnings
   echo "  Optionally bump its \`learned:\` field to today so this audit won't flag it next quarter."
 } > "$REPORT"
 
-echo "report at $REPORT; ${#candidates[@]} file(s) moved."
+echo "report at $REPORT; ${#moved[@]} file(s) moved."
