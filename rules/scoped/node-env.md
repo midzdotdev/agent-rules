@@ -5,7 +5,7 @@ applies: javascript
 severity: rule
 learned: 2026-06-20
 occurrences: 1
-status: promoted
+status: seeded
 ---
 
 # `NODE_ENV` is not a deployment stage

@@ -42,6 +42,14 @@ When a correction recurs (bump `occurrences`), open a follow-up PR:
 2. Set the learning's `status: promoted`; leave the file as history.
 3. Add the "Promoted to" link in `learnings/INDEX.md`.
 
+## Seeding a rule directly
+
+Some rules are born as rules — lifted from an existing global config, not from a
+logged correction (the two seed rules came this way). Skip `learnings/` entirely:
+write straight to `rules/`, set `status: seeded`, and add no INDEX row (the INDEX
+tracks the corrections log, not rule provenance). Frontmatter, the anti-bloat
+checklist, and the dense-agent-docs standard still apply.
+
 ## Anti-bloat checklist
 
 A rule earns its place only if all hold:
@@ -66,12 +74,19 @@ applies: code-style          # rough topic
 severity: preference         # preference | rule | hard-rule
 learned: 2026-06-20          # ISO date first added
 occurrences: 1               # bumped each recurrence
-status: learning             # learning | promoted | deprecated
+status: learning             # learnings/: learning | promoted | deprecated · rules/: seeded
 ---
 ```
 
 Body sections (the template enforces them): **The pattern** · **Why** ·
 **When this came up** · **When NOT to apply**.
+
+## Consistency check
+
+`scripts/check-consistency.sh` (run in CI on every push/PR via
+`.github/workflows/consistency.yml`) verifies internal links resolve, every
+learning has an INDEX row, and rule/learning files carry frontmatter. Run it
+locally before opening a PR.
 
 ## Archive audit
 

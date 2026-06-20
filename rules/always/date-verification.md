@@ -5,7 +5,7 @@ applies: research
 severity: rule
 learned: 2026-06-20
 occurrences: 1
-status: promoted
+status: seeded
 ---
 
 # Verify the current date programmatically
