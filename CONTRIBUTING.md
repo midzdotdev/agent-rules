@@ -25,7 +25,10 @@ Once the immediate fix is applied, offer: *"Log this to `agent-rules`?"* On yes:
 3. Copy `learnings/TEMPLATE.md` → `learnings/$(date +%Y-%m-%d)-<slug>.md`
 4. Fill in: what was asked, what was wrong, the correction, and **why** the
    preferred way is better.
-5. Add a row to [`learnings/INDEX.md`](learnings/INDEX.md).
+5. Add a row to [`learnings/INDEX.md`](learnings/INDEX.md) (fill the **Applies**
+   topic — that's how the agent finds it later), and a link under **Recent
+   learnings** in `SKILL.md`. Keep that inline list to ~5: drop the oldest, which
+   stays findable via INDEX.
 6. Commit (`learning: prefer X over Y`), push, `gh pr create --fill`.
 7. Drop the PR link in chat.
 
@@ -35,12 +38,20 @@ part of the bloat control.
 
 ## Promotion: learning → rule
 
-When a correction recurs (bump `occurrences`), open a follow-up PR:
+Recurrence is the trigger to *consider* promotion, not an automatic graduation.
+When a correction recurs, bump `occurrences`; promote only if it also clears the
+anti-bloat checklist below (still universal, portable, worth the always/ cost). A
+borderline learning can sit at `occurrences: 3` and remain a learning. To promote,
+open a follow-up PR:
 
 1. Distil the entry into `rules/scoped/<topic>.md` — or `rules/always/` for a
    genuinely universal rule (be strict; see the always/ cap in `AGENTS.md`).
 2. Set the learning's `status: promoted`; leave the file as history.
 3. Add the "Promoted to" link in `learnings/INDEX.md`.
+
+`occurrences` is the evidence weight for that judgment, and it's load-bearing in
+automation: the archive audit only retires never-recurred learnings
+(`occurrences: 1`), sparing anything that has bitten twice or more.
 
 ## Seeding a rule directly
 
@@ -73,7 +84,7 @@ description: ...              # one line; load-bearing for relevance ranking
 applies: code-style          # rough topic
 severity: preference         # preference | rule | hard-rule
 learned: 2026-06-20          # ISO date first added
-occurrences: 1               # bumped each recurrence
+occurrences: 1               # bumped each recurrence; promotion evidence + archive-audit guard
 status: learning             # learnings/: learning | promoted | deprecated · rules/: seeded
 ---
 ```
