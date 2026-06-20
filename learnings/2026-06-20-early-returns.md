@@ -1,11 +1,6 @@
 ---
-name: early-returns
 description: Reduce nesting by returning early from guard conditions instead of wrapping the happy path in if/else
 applies: code-style
-severity: preference
-learned: 2026-06-20
-occurrences: 1
-status: learning
 ---
 
 # Prefer early returns over nested conditionals

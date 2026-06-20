@@ -6,13 +6,14 @@ restructuring it (not before adding entries — that's `CONTRIBUTING.md`).
 ## Rules vs. skills vs. learnings
 
 - **Rule** (`rules/`) — a standing preference that colours work continuously;
-  short, resident (always/) or topically loaded (scoped/).
+  short. Applied to every task (always/) or when the topic matches (scoped/).
 - **Skill** (`skills/`) — a procedure for a specific task, loaded on demand
   when its trigger fires. Choose this over a rule when the guidance is a
   multi-step method, not a one-line disposition. Each skill needs its own
   symlink into `~/.claude/skills/` (see the nix flake).
-- **Learning** (`learnings/`) — a raw correction, append-only. Recurrence makes
-  it a promotion *candidate*, not an automatic rule (see `CONTRIBUTING.md`).
+- **Learning** (`learnings/`) — a provisional correction; deleted once promoted
+  or retired (git is the history). Recurrence makes it a promotion *candidate*,
+  not an automatic rule (see `CONTRIBUTING.md`).
 
 ## `rules/always/` has a soft cap of ~5 files
 

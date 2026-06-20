@@ -36,29 +36,22 @@ part of the bloat control.
 
 ## Promotion: learning → rule
 
-Recurrence is the trigger to *consider* promotion, not an automatic graduation.
-When a correction recurs, bump `occurrences`; promote only if it also clears the
-anti-bloat checklist below (still universal, portable, worth the always/ cost). A
-borderline learning can sit at `occurrences: 3` and remain a learning. To promote,
-open a follow-up PR:
+Recurrence is the trigger to *consider* promotion, not an automatic graduation:
+when a correction recurs and clears the anti-bloat checklist below (universal,
+portable, worth the always/ cost), promote it in a follow-up PR:
 
-1. Distil the entry into `rules/scoped/<topic>.md` — or `rules/always/` for a
-   genuinely universal rule (be strict; see the always/ cap in `AGENTS.md`).
-2. Set the learning's `status: promoted`; leave the file as history.
-3. In `SKILL.md`, remove it from **Learnings** and add the new rule under
-   **Always** / **Scoped**.
-
-`occurrences` is the evidence weight for that judgment — recurred many times is a
-clear promote; recurred once but still marginal can wait.
+1. Distil it into `rules/scoped/<topic>.md` — or `rules/always/` for a genuinely
+   universal rule (be strict; see the always/ cap in `AGENTS.md`).
+2. Delete the learning from `learnings/` — git keeps the history; don't leave a
+   duplicate behind.
+3. In `SKILL.md`, move it from **Learnings** to **Always** / **Scoped**.
 
 ## Seeding a rule directly
 
-Some rules are born as rules — lifted from an existing global config, not from a
-logged correction (the two seed rules came this way). Skip `learnings/` entirely:
-write straight to `rules/`, list it under **Always** / **Scoped** in `SKILL.md`,
-and set `status: seeded`. It's not a correction, so it gets no **Learnings**
-entry. Frontmatter, the anti-bloat checklist, and the dense-agent-docs standard
-still apply.
+A rule needn't come from a logged correction — write it straight into `rules/`
+(the two starting rules were lifted from a global config this way). List it under
+**Always** / **Scoped** in `SKILL.md`; the anti-bloat checklist and the
+dense-agent-docs standard still apply.
 
 ## Anti-bloat checklist
 
@@ -78,21 +71,17 @@ Write the entry itself to the `dense-agent-docs` skill's standard.
 
 ```yaml
 ---
-name: early-returns          # filename-safe slug
-description: ...              # one line; load-bearing for relevance ranking
-applies: code-style          # rough topic
-severity: preference         # preference | rule | hard-rule
-learned: 2026-06-20          # ISO date first added
-occurrences: 1               # bumped each recurrence; evidence for promotion
-status: learning             # learnings/: learning | promoted | deprecated · rules/: seeded
+description: one-line summary of the rule or learning
+applies: code-style          # rough topic — how the agent finds it
 ---
 ```
 
-Body sections (the template enforces them): **The pattern** · **Why** ·
+No `status` (the directory says whether it's a rule or a learning), no date
+(it's in git, and in the learning's filename), no recurrence counter (git is the
+history). Body sections (enforced by the template): **The pattern** · **Why** ·
 **When this came up** · **When NOT to apply**.
 
 ## Retiring a learning
 
-If a learning no longer holds, delete it (git keeps the history) or set
-`status: deprecated` and remove it from `SKILL.md`. No scheduled audit — prune
-by hand when you notice one.
+If a learning no longer holds, delete it and remove it from `SKILL.md`. Git keeps
+the history; there's no scheduled audit — prune by hand when you notice one.

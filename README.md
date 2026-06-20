@@ -44,22 +44,9 @@ corrections. Discovered by Claude Code as a skill via
    ln -sfn ~/code/agent-rules/skills/dense-agent-docs ~/.claude/skills/dense-agent-docs
    ```
 
-   **nix-darwin + home-manager** (declarative, preferred):
-   ```nix
-   home.activation.agentRulesSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-     mkdir -p ~/.claude/skills
-     link_skill() {
-       local name="$1" target="$2"
-       if [[ -e ~/.claude/skills/$name && ! -L ~/.claude/skills/$name ]]; then
-         echo "WARNING: ~/.claude/skills/$name exists and is not a symlink — leaving alone"
-       else
-         ln -sfn "$target" ~/.claude/skills/$name
-       fi
-     }
-     link_skill agent-rules ~/code/agent-rules
-     link_skill dense-agent-docs ~/code/agent-rules/skills/dense-agent-docs
-   '';
-   ```
+   **Declarative** (e.g. nix-darwin + home-manager): make the same symlinks from
+   an activation script — one per skill. Keep that logic in your system config,
+   not copied here, so the two can't drift.
 
 That's it. `SKILL.md` frontmatter loads at session start; the body
 loads on demand.
