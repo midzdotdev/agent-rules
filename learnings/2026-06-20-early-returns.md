@@ -12,9 +12,8 @@ status: learning
 
 ## The pattern
 
-Use early returns (also called "guard clauses" or the "bouncer pattern") to
-handle preconditions first, then let the happy path live at the top scope
-of the function.
+Handle preconditions first with early returns (guard clauses), then let the
+happy path live at the function's top scope.
 
 Avoid:
 
@@ -50,27 +49,21 @@ function process(x) {
 
 ## Why
 
-- The happy path is no longer indented under three layers of conditions.
-- Each guard reads as one rule, on one line.
-- Adding or removing a guard doesn't ripple indentation through the rest
-  of the function.
-- A reviewer sees the preconditions enumerated up top before any logic.
+- Happy path isn't buried under three layers of indentation.
+- Each guard reads as one rule on one line.
+- Adding or removing a guard doesn't re-indent the rest of the function.
+- Preconditions are enumerated up front, before any logic.
 
 ## When this came up
 
-James asked for this explicitly while specifying his coding preferences
-for the `agent-rules` repo on 2026-06-20. Worded as: *"if I tell claude to
-use early returns or whatever it's called, where rather than having many
-nested if blocks and else if blocks, the complexity of the scope is
-reduced by returning inside an if before that complexity is introduced,
-then that should also be logged here."*
+James specified this while setting up `agent-rules` (2026-06-20): reduce scope
+complexity by returning inside a guard `if` before nesting is introduced.
 
 ## When NOT to apply
 
-- Inside expression-based / single-return functional code (map/filter/reduce
-  chains, ternary expressions). The form doesn't accommodate early return.
-- When the conditions genuinely require interleaved logic — both branches
-  do real work that needs to merge afterwards. Rare; almost always a smell.
-- In languages or contexts where multiple returns are idiomatically
-  discouraged (some C++ shops, some MISRA-style codebases). Match the
-  surrounding style.
+- Expression-based / single-return functional code (map/filter/reduce,
+  ternaries) — no place for an early return.
+- When both branches do real work that must merge afterwards. Rare; usually a
+  smell.
+- Codebases that idiomatically discourage multiple returns (some C++/MISRA
+  shops). Match surrounding style.
