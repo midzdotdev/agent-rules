@@ -1,11 +1,6 @@
 ---
-name: date-verification
 description: Run `date +%Y-%m-%d` before asserting anything time-sensitive. Don't trust the training-data sense of "now".
 applies: research
-severity: rule
-learned: 2026-06-20
-occurrences: 1
-status: seeded
 ---
 
 # Verify the current date programmatically

@@ -1,11 +1,6 @@
 ---
-name: node-env
 description: NODE_ENV is a build/runtime switch (React dev warnings, library optimisations), not a deployment-stage label. Set it to "production" everywhere; use other env vars or feature flags to differentiate stages.
 applies: javascript
-severity: rule
-learned: 2026-06-20
-occurrences: 1
-status: seeded
 ---
 
 # `NODE_ENV` is not a deployment stage

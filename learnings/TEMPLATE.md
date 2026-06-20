@@ -1,11 +1,6 @@
 ---
-name: short-slug
-description: One-line summary, read by AI tools at session start for relevance ranking
+description: one-line summary of the rule or learning
 applies: code-style
-severity: preference
-learned: YYYY-MM-DD
-occurrences: 1
-status: learning
 ---
 
 # Title (verb phrase: "Prefer X over Y", "Avoid Z", etc.)
