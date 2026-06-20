@@ -8,4 +8,4 @@ Promote a learning here only if it applies universally — across
 languages, frameworks, and project types. When in doubt, put it in
 `../scoped/` instead.
 
-See [`../../AGENTS.md`](../../AGENTS.md) for the live index of entries.
+See [`../../SKILL.md`](../../SKILL.md) for the live index of entries.

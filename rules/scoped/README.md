@@ -7,4 +7,4 @@ These are promoted from `../learnings/` once a correction has recurred
 enough to justify a permanent rule. Until then, the learning entry is
 the source of truth.
 
-See [`../../AGENTS.md`](../../AGENTS.md) for the live index of entries.
+See [`../../SKILL.md`](../../SKILL.md) for the live index of entries.
