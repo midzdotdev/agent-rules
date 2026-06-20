@@ -21,14 +21,13 @@ essentially every non-trivial task, so each one competes for budget on
 most loads. Promotion requires the rule to be both universal *and* worth
 that cost. The cap isn't enforced mechanically — hold it in PR review.
 
-## Learnings are found by topic, not just recency
+## The SKILL.md list is the index — no separate index file
 
-`SKILL.md` inlines the ~5 most recent learnings (a fast path) and points at
-`learnings/INDEX.md` for the rest. The agent matches INDEX's **Applies** column
-against the task — the same topic-matching it does for `rules/scoped/`. Recency
-alone would hide an old-but-relevant correction; topic matching surfaces it.
-Keep the inline "Recent learnings" list to ~5 (PR-review enforced, like the
-always/ cap); older entries live only in INDEX.
+`SKILL.md` lists every un-promoted learning with its topic; the agent matches
+that against the task, the same way it does for `rules/scoped/`. At this scale
+the list *is* the index — a separate `INDEX.md`, a generator, or a CI check to
+keep them in sync is machinery the content doesn't yet justify. If the list ever
+outgrows the entry doc, generate it from frontmatter then, not before.
 
 ## No cross-tool sync today
 
