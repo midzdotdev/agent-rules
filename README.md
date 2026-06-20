@@ -10,8 +10,8 @@ corrections. Discovered by Claude Code as a skill via
 - [`AGENTS.md`](AGENTS.md) — architectural decisions; read before restructuring.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how new entries get added.
 - `rules/` — curated, durable rules.
-  - `always/` — universal; loaded every session.
-  - `scoped/` — topic-specific; loaded when relevant.
+  - `always/` — universal; applied to every task.
+  - `scoped/` — topic-specific; applied when the topic matches.
 - `skills/` — task-triggered method guidance, each loaded on demand.
 - `learnings/` — append-only log of corrections. Promoted to `rules/` after recurrence.
 - `archive/` — superseded entries, kept for history.

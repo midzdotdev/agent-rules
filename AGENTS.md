@@ -16,9 +16,10 @@ restructuring it (not before adding entries — that's `CONTRIBUTING.md`).
 
 ## `rules/always/` has a soft cap of ~5 files
 
-Each file here loads into every prompt's context budget. Promotion
-requires the rule to be both universal *and* worth that cost. The cap
-isn't enforced mechanically — hold it in PR review.
+Always-on rules get pulled into context (via the SKILL.md body) for
+essentially every non-trivial task, so each one competes for budget on
+most loads. Promotion requires the rule to be both universal *and* worth
+that cost. The cap isn't enforced mechanically — hold it in PR review.
 
 ## Learnings are found by topic, not just recency
 
