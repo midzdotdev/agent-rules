@@ -33,20 +33,32 @@ corrections. Discovered by Claude Code as a skill via
    git clone <repo-url> ~/code/agent-rules
    ```
 
-2. Make Claude Code discover `SKILL.md` by symlinking the repo into
-   `~/.claude/skills/`.
+2. Make Claude Code discover `SKILL.md` by symlinking into `~/.claude/skills/`.
+   The repo root is one skill; **each directory under `skills/` is its own
+   skill and needs its own link** (Claude Code does not recurse). Add a line
+   per skill.
 
    **Manual** (any system):
    ```bash
    mkdir -p ~/.claude/skills
    ln -sfn ~/code/agent-rules ~/.claude/skills/agent-rules
+   ln -sfn ~/code/agent-rules/skills/dense-agent-docs ~/.claude/skills/dense-agent-docs
    ```
 
    **nix-darwin + home-manager** (declarative, preferred):
    ```nix
-   home.activation.agentRulesSkill = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+   home.activation.agentRulesSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
      mkdir -p ~/.claude/skills
-     ln -sfn ~/code/agent-rules ~/.claude/skills/agent-rules
+     link_skill() {
+       local name="$1" target="$2"
+       if [[ -e ~/.claude/skills/$name && ! -L ~/.claude/skills/$name ]]; then
+         echo "WARNING: ~/.claude/skills/$name exists and is not a symlink — leaving alone"
+       else
+         ln -sfn "$target" ~/.claude/skills/$name
+       fi
+     }
+     link_skill agent-rules ~/code/agent-rules
+     link_skill dense-agent-docs ~/code/agent-rules/skills/dense-agent-docs
    '';
    ```
 
