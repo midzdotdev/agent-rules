@@ -11,14 +11,23 @@ restructuring it (not before adding entries — that's `CONTRIBUTING.md`).
   when its trigger fires. Choose this over a rule when the guidance is a
   multi-step method, not a one-line disposition. Each skill needs its own
   symlink into `~/.claude/skills/` (see the nix flake).
-- **Learning** (`learnings/`) — a raw correction, append-only; promoted to a
-  rule once it recurs.
+- **Learning** (`learnings/`) — a raw correction, append-only. Recurrence makes
+  it a promotion *candidate*, not an automatic rule (see `CONTRIBUTING.md`).
 
 ## `rules/always/` has a soft cap of ~5 files
 
 Each file here loads into every prompt's context budget. Promotion
 requires the rule to be both universal *and* worth that cost. The cap
 isn't enforced mechanically — hold it in PR review.
+
+## Learnings are found by topic, not just recency
+
+`SKILL.md` inlines the ~5 most recent learnings (a fast path) and points at
+`learnings/INDEX.md` for the rest. The agent matches INDEX's **Applies** column
+against the task — the same topic-matching it does for `rules/scoped/`. Recency
+alone would hide an old-but-relevant correction; topic matching surfaces it.
+Keep the inline "Recent learnings" list to ~5 (PR-review enforced, like the
+always/ cap); older entries live only in INDEX.
 
 ## No cross-tool sync today
 
