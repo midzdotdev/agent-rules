@@ -26,34 +26,43 @@ Codex, etc.) via the [`AGENTS.md`](AGENTS.md) convention.
 
 ## Setup
 
-```bash
-git clone <repo-url> ~/code/agent-rules
-cd ~/code/agent-rules
-./scripts/install.sh
-```
+1. Clone:
+   ```bash
+   git clone <repo-url> ~/code/agent-rules
+   ```
 
-`install.sh` does two things:
+2. Make Claude Code discover `SKILL.md` by symlinking the repo into
+   `~/.claude/skills/`.
 
-1. Symlinks the repo into `~/.claude/skills/agent-rules/` so Claude Code
-   discovers it as a skill (frontmatter loads at session start; body loads
-   on demand).
-2. Appends a short, marker-fenced pointer block to `~/.claude/CLAUDE.md`
-   so the assistant knows where to look and when to open a PR.
+   **Manual** (any system):
+   ```bash
+   mkdir -p ~/.claude/skills
+   ln -sfn ~/code/agent-rules ~/.claude/skills/agent-rules
+   ```
 
-The script is idempotent — re-running it does nothing if already installed.
+   **nix-darwin + home-manager** (declarative, preferred):
+   ```nix
+   home.activation.agentRulesSkill = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+     mkdir -p ~/.claude/skills
+     ln -sfn ~/code/agent-rules ~/.claude/skills/agent-rules
+   '';
+   ```
+
+That's it. `SKILL.md` frontmatter loads at session start; the body
+loads on demand.
 
 ### Required environment
 
-- `CONTEXT7_API_KEY` — set in your shell rc (or via nix-managed sops/agenix).
-  Used by the `ctx7` CLI for library documentation lookups. Get a key at
-  <https://context7.com>.
+- `CONTEXT7_API_KEY` — set in your shell rc (or via nix-managed
+  sops/agenix). Used by the `ctx7` CLI for library documentation
+  lookups. Get a key at <https://context7.com>.
 
-### MCP servers and tool installs
+### Tool installs and MCP servers
 
 This repo deliberately does **not** install MCP servers or IDE-specific
-configuration. Those live in the nix flake at `~/.config/nix/flake.nix`
-(or wherever your system is declared). If a rule here references a tool,
-the corresponding install belongs in the flake.
+configuration. Those live in your system config (nix flake, dotfiles,
+etc.). If a rule here references a tool, the corresponding install
+belongs there.
 
 ## Adding entries
 
