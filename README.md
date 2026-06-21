@@ -1,19 +1,20 @@
 # agent-rules
 
 James's portable corpus of coding preferences, anti-patterns, and
-corrections. Discovered by Claude Code as a skill via
-[`SKILL.md`](SKILL.md).
+corrections. Each subdirectory of [`skills/`](skills/) is a self-contained
+skill, discovered by Claude Code — and installable with the
+[`skills`](https://www.npmjs.com/package/skills) CLI — via its `SKILL.md`.
 
 ## What lives here
 
-- [`SKILL.md`](SKILL.md) — entry point for AI tools (the skill manifest and map).
+- [`skills/`](skills/) — one directory per skill, each loaded on demand via its `SKILL.md`.
+  - [`agent-rules/`](skills/agent-rules/) — the rules corpus. Its `SKILL.md` is the map; alongside it:
+    - `rules/always/` — universal; applied to every task.
+    - `rules/scoped/` — topic-specific; applied when the topic matches.
+    - `learnings/` — corrections not yet promoted to `rules/`; listed in the `SKILL.md` by topic.
+  - [`dense-agent-docs/`](skills/dense-agent-docs/) — writing standard for documents an LLM loads as instructions.
 - [`AGENTS.md`](AGENTS.md) — architectural decisions; read before restructuring.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how new entries get added.
-- `rules/` — curated, durable rules.
-  - `always/` — universal; applied to every task.
-  - `scoped/` — topic-specific; applied when the topic matches.
-- `skills/` — task-triggered method guidance, each loaded on demand.
-- `learnings/` — corrections not yet promoted to `rules/`; listed in `SKILL.md` by topic.
 
 ## What does NOT live here
 
@@ -27,20 +28,33 @@ corrections. Discovered by Claude Code as a skill via
 
 ## Setup
 
+### With the `skills` CLI (easiest)
+
+[`skills`](https://www.npmjs.com/package/skills) discovers every skill under
+`skills/` and links it into your agent's skills directory:
+
+```bash
+# both skills, globally, for Claude Code
+npx skills add midzdotdev/agent-rules -g -a claude-code
+
+# or list / pick
+npx skills add midzdotdev/agent-rules --list
+npx skills add midzdotdev/agent-rules --skill dense-agent-docs -g -a claude-code
+```
+
+### By hand
+
 1. Clone:
    ```bash
-   git clone <repo-url> ~/code/agent-rules
+   git clone git@github.com:midzdotdev/agent-rules.git ~/code/agent-rules
    ```
 
-2. Make Claude Code discover `SKILL.md` by symlinking into `~/.claude/skills/`.
-   The repo root is one skill; **each directory under `skills/` is its own
-   skill and needs its own link** (Claude Code does not recurse). Add a line
-   per skill.
+2. Symlink each skill into `~/.claude/skills/`. Claude Code does not recurse,
+   so add one line per skill directory:
 
-   **Manual** (any system):
    ```bash
    mkdir -p ~/.claude/skills
-   ln -sfn ~/code/agent-rules ~/.claude/skills/agent-rules
+   ln -sfn ~/code/agent-rules/skills/agent-rules ~/.claude/skills/agent-rules
    ln -sfn ~/code/agent-rules/skills/dense-agent-docs ~/.claude/skills/dense-agent-docs
    ```
 
@@ -48,7 +62,7 @@ corrections. Discovered by Claude Code as a skill via
    an activation script — one per skill. Keep that logic in your system config,
    not copied here, so the two can't drift.
 
-That's it. `SKILL.md` frontmatter loads at session start; the body
+That's it. Each `SKILL.md` frontmatter loads at session start; the body
 loads on demand.
 
 ### Required environment

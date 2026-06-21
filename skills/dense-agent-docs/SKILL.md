@@ -1,6 +1,6 @@
 ---
 name: dense-agent-docs
-description: Use when writing or editing any document an LLM loads as instructions or memory — CLAUDE.md, AGENTS.md, SKILL.md, rule and learning files, agent memory, .cursor/rules, copilot-instructions. Maximises signal per token: cut what the model can infer, lead with the instruction, structure over prose. Not for human-facing docs like README or changelogs.
+description: "Use when writing or editing any document an LLM loads as instructions or memory — CLAUDE.md, AGENTS.md, SKILL.md, rule and learning files, agent memory, .cursor/rules, copilot-instructions. Maximises signal per token: cut what the model can infer, lead with the instruction, structure over prose. Not for human-facing docs like README or changelogs."
 ---
 
 # Dense agent docs
