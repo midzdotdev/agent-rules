@@ -1,0 +1,17 @@
+#!/bin/sh
+# Validate relative links between markdown docs before committing.
+#
+# Offline only: lychee checks that every relative link resolves to a file that
+# exists, and skips network requests. This catches the common breakage — a
+# moved or renamed file leaving a dangling link — in a few milliseconds, with
+# no network. Full external-link checking runs in CI (.github/workflows/links.yml).
+#
+# Enable in a fresh clone: git config core.hooksPath .githooks
+
+if ! command -v lychee >/dev/null 2>&1; then
+	echo "pre-commit: lychee not installed — skipping link check (CI still runs it)." >&2
+	echo "  install: brew install lychee   (or add pkgs.lychee to your nix flake)" >&2
+	exit 0
+fi
+
+exec lychee --offline --no-progress '**/*.md'
