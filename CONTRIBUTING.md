@@ -1,7 +1,8 @@
 # Contributing
 
 Two ways the repo grows: corrections logged to `learnings/`, the recurring
-ones promoted to `rules/`.
+ones promoted to `rules/`. Both live inside the `agent-rules` skill, under
+`skills/agent-rules/` (the paths below are written in full from the repo root).
 
 ## Scope
 
@@ -22,11 +23,12 @@ Once the immediate fix is applied, offer: *"Log this to `agent-rules`?"* On yes:
 
 1. `cd ~/code/agent-rules`
 2. `git checkout -b learning/<slug>`
-3. Copy `learnings/TEMPLATE.md` → `learnings/$(date +%Y-%m-%d)-<slug>.md`
+3. Copy `skills/agent-rules/learnings/TEMPLATE.md` →
+   `skills/agent-rules/learnings/$(date +%Y-%m-%d)-<slug>.md`
 4. Fill in: what was asked, what was wrong, the correction, and **why** the
    preferred way is better.
-5. Add it to the **Learnings** list in `SKILL.md`, with its topic — that's how
-   the agent finds it later.
+5. Add it to the **Learnings** list in `skills/agent-rules/SKILL.md`, with its
+   topic — that's how the agent finds it later.
 6. Commit (`learning: prefer X over Y`), push, `gh pr create --fill`.
 7. Drop the PR link in chat.
 
@@ -40,18 +42,21 @@ Recurrence is the trigger to *consider* promotion, not an automatic graduation:
 when a correction recurs and clears the anti-bloat checklist below (universal,
 portable, worth the always/ cost), promote it in a follow-up PR:
 
-1. Distil it into `rules/scoped/<topic>.md` — or `rules/always/` for a genuinely
-   universal rule (be strict; see the always/ cap in `AGENTS.md`).
-2. Delete the learning from `learnings/` — git keeps the history; don't leave a
-   duplicate behind.
-3. In `SKILL.md`, move it from **Learnings** to **Always** / **Scoped**.
+1. Distil it into `skills/agent-rules/rules/scoped/<topic>.md` — or
+   `skills/agent-rules/rules/always/` for a genuinely universal rule (be strict;
+   see the always/ cap in `AGENTS.md`).
+2. Delete the learning from `skills/agent-rules/learnings/` — git keeps the
+   history; don't leave a duplicate behind.
+3. In `skills/agent-rules/SKILL.md`, move it from **Learnings** to **Always** /
+   **Scoped**.
 
 ## Seeding a rule directly
 
-A rule needn't come from a logged correction — write it straight into `rules/`
-(the two starting rules were lifted from a global config this way). List it under
-**Always** / **Scoped** in `SKILL.md`; the anti-bloat checklist and the
-dense-agent-docs standard still apply.
+A rule needn't come from a logged correction — write it straight into
+`skills/agent-rules/rules/` (the two starting rules were lifted from a global
+config this way). List it under **Always** / **Scoped** in
+`skills/agent-rules/SKILL.md`; the anti-bloat checklist and the dense-agent-docs
+standard still apply.
 
 ## Anti-bloat checklist
 
@@ -83,5 +88,6 @@ history). Body sections (enforced by the template): **The pattern** · **Why** �
 
 ## Retiring a learning
 
-If a learning no longer holds, delete it and remove it from `SKILL.md`. Git keeps
-the history; there's no scheduled audit — prune by hand when you notice one.
+If a learning no longer holds, delete it and remove it from
+`skills/agent-rules/SKILL.md`. Git keeps the history; there's no scheduled
+audit — prune by hand when you notice one.

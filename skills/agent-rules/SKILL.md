@@ -28,5 +28,7 @@ Not yet promoted to rules — apply when the topic matches.
 
 ## See also
 
-- Adding a learning or rule: [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- Changing how the repo itself works: [`AGENTS.md`](AGENTS.md)
+These live at the repo root (one level above this skill), so use the repo links:
+
+- Adding a learning or rule: [`CONTRIBUTING.md`](https://github.com/midzdotdev/agent-rules/blob/main/CONTRIBUTING.md)
+- Changing how the repo itself works: [`AGENTS.md`](https://github.com/midzdotdev/agent-rules/blob/main/AGENTS.md)
