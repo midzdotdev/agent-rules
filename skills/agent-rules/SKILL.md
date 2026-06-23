@@ -25,6 +25,7 @@ description: James's portable coding rules, preferences, and corrections log. Co
 Not yet promoted to rules — apply when the topic matches.
 
 - [Prefer early returns over nested conditionals](learnings/2026-06-20-early-returns.md) — *code-style*
+- [Always ship light + dark HTML artifacts, match system theme](learnings/2026-06-23-html-themes-match-system.md) — *html*
 
 ## See also
 
