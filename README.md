@@ -13,6 +13,7 @@ skill, discovered by Claude Code — and installable with the
     - `rules/scoped/` — topic-specific; applied when the topic matches.
     - `learnings/` — corrections not yet promoted to `rules/`; listed in the `SKILL.md` by topic.
   - [`dense-agent-docs/`](skills/dense-agent-docs/) — writing standard for documents an LLM loads as instructions.
+  - [`watch-review-feedback/`](skills/watch-review-feedback/) — after handing the human issues/PRs to review, tail the tracker and respond to their comments proactively, on the surface they came from.
 - [`AGENTS.md`](AGENTS.md) — architectural decisions; read before restructuring.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how new entries get added.
 
