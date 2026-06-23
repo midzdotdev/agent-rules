@@ -77,7 +77,11 @@ new count is the baseline). Re-baselining is simpler and robust; don't try to
 parse authorship.
 
 With a distinct bot/App identity → skip re-baselining and **filter out comments
-authored by that identity** instead.
+authored by that identity** instead, e.g. count only
+`select(.author.login != "<bot>")`. Gotcha: `gh ... --json` (GraphQL) reports a
+bot's `author.login` as the bare slug `my-app`, while the REST API returns
+`my-app[bot]` — filter on the form your query actually returns (bare slug for
+`gh view`).
 
 ## On activity, respond
 
