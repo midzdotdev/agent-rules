@@ -45,12 +45,26 @@ while sleep 20; do [ "$(sig 97 98 99 100)" != "$base" ] && { echo "ACTIVITY"; br
 Watch issue-level comments **and** PR reviews/review-comments — review threads
 don't show up in the issue-comment count.
 
+## Attribution & identity
+
+The CLI is usually authed as the human, so comments you post are authored under
+*their* name. **Mark every comment as agent-authored** — append a one-line
+footer (e.g. `— 🤖 agent-authored, replying for @user`) so the thread is honest
+about who wrote it. Don't impersonate the human silently.
+
+If you have a **distinct identity** (a GitHub App or a bot account with its own
+token — `app[bot]` / a machine user), the footer is optional, and that identity
+makes self-firing trivial to avoid (filter by author, below).
+
 ## Avoid self-firing
 
-The CLI is usually authed as the human, so your own comments are
-indistinguishable from theirs by author. **Re-baseline the watcher after every
-comment you post** (restart it so the new count is the baseline). Don't try to
-filter by author — re-baselining is simpler and robust.
+Authed as the human → your comments are indistinguishable from theirs by author,
+so **re-baseline the watcher after every comment you post** (restart it so the
+new count is the baseline). Re-baselining is simpler and robust; don't try to
+parse authorship.
+
+With a distinct bot/App identity → skip re-baselining and **filter out comments
+authored by that identity** instead.
 
 ## On activity, respond
 
