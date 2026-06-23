@@ -31,19 +31,32 @@ Reference loop (GitHub/`gh`; the shape transfers to `glab`, Linear, etc. — swa
 the count queries):
 
 ```bash
-# args: the issue/PR numbers to watch, e.g. "97 98 99 100"
-sig() { for n in $@; do printf 'i%s=%s;' "$n" \
-  "$(gh issue view "$n" --json comments -q '.comments|length' 2>/dev/null)"; done
+# Watch issue comments + open-PR comments/reviews. `sample` returns non-zero if
+# ANY read fails or is empty, so a transient API blip can't be mistaken for a change.
+sample() { local s="" v c r
+  for n in 97 98 99 100; do
+    v=$(gh issue view "$n" --json comments -q '.comments|length' 2>/dev/null) || return 1
+    [ -n "$v" ] || return 1; s+="i$n=$v;"; done
   for p in $(gh pr list --state open --json number -q '.[].number' 2>/dev/null); do
-    printf 'p%s=c%s/r%s;' "$p" \
-      "$(gh pr view "$p" --json comments -q '.comments|length' 2>/dev/null)" \
-      "$(gh pr view "$p" --json reviews -q '.reviews|length' 2>/dev/null)"; done; }
-base=$(sig 97 98 99 100)
-while sleep 20; do [ "$(sig 97 98 99 100)" != "$base" ] && { echo "ACTIVITY"; break; }; done
+    c=$(gh pr view "$p" --json comments -q '.comments|length' 2>/dev/null) || return 1
+    r=$(gh pr view "$p" --json reviews -q '.reviews|length' 2>/dev/null) || return 1
+    [ -n "$c" ] && [ -n "$r" ] || return 1; s+="p$p=c$c/r$r;"; done
+  printf '%s' "$s"; }
+until base=$(sample); do sleep 5; done            # clean baseline
+while sleep 20; do
+  cur=$(sample) || continue                        # API blip -> skip tick
+  [ "$cur" = "$base" ] && continue
+  sleep 3; conf=$(sample) || continue              # re-confirm before firing
+  [ "$conf" != "$base" ] && { echo "ACTIVITY"; break; }
+done
 ```
 
 Watch issue-level comments **and** PR reviews/review-comments — review threads
-don't show up in the issue-comment count.
+don't show up in the issue-comment count. **Make the watcher transient-proof:**
+skip any tick where a read fails or returns empty, and **re-confirm a detected
+delta with a second sample** before firing — a momentary `gh`/network error
+otherwise reads as phantom activity (observed: one empty read fired a phantom
+wakeup).
 
 ## Attribution & identity
 
