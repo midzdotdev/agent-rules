@@ -15,6 +15,20 @@ would make the CLI treat the entire repo as a single skill and never surface the
 others. Keeping every skill one level down lets the CLI — and Claude Code, which
 also doesn't recurse — discover and link each one independently.
 
+## Entries commit straight to `main` — no branches, no PRs
+
+The local clone is the source of truth: Claude loads these skills by symlink
+from `~/code/agent-rules`, so the working copy must always be current. The
+remote is a backup. Branch-and-PR would leave the local `main` stale between
+merges and scatter the corrections log across PR threads.
+
+So agents commit approved learnings/rules directly to `main` and push. The human
+gate moves from async PR review to the in-chat confirmation *before* the commit;
+the commit history is the log. The pre-commit hook (`lychee --offline`) validates
+links locally — it's the gate now. The CI workflow still runs on push to `main`
+but only as an after-the-fact external-link backstop on the backup; it no longer
+gates anything (see `.github/workflows/links.yml`).
+
 ## Rules vs. skills vs. learnings
 
 - **Rule** (`skills/agent-rules/rules/`) — a standing preference that colours
@@ -33,7 +47,8 @@ also doesn't recurse — discover and link each one independently.
 Always-on rules get pulled into context (via the `agent-rules` SKILL.md body)
 for essentially every non-trivial task, so each one competes for budget on
 most loads. Promotion requires the rule to be both universal *and* worth
-that cost. The cap isn't enforced mechanically — hold it in PR review.
+that cost. The cap isn't enforced mechanically — hold it at capture time, when
+you confirm the entry.
 
 ## The SKILL.md list is the index — no separate index file
 

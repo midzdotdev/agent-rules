@@ -1,6 +1,6 @@
 ---
 name: agent-rules
-description: James's portable coding rules, preferences, and corrections log. Consult before any non-trivial coding task. Apply rules/always/ every session; for the task's topic check rules/scoped/ and the learnings listed below. When James redirects you on a generalisable preference, open a PR per CONTRIBUTING.md.
+description: James's portable coding rules, preferences, and corrections log. Consult before any non-trivial coding task. Apply rules/always/ every session; for the task's topic check rules/scoped/ and the learnings listed below. When James redirects you on a generalisable preference, capture it per CONTRIBUTING.md.
 ---
 
 # agent-rules

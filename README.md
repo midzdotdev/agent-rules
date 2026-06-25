@@ -84,9 +84,10 @@ belongs there.
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). In short:
 
 - When an assistant is redirected mid-task, it offers to log a learning.
-- On yes, it opens a PR adding `learnings/YYYY-MM-DD-slug.md` on a branch.
-- James reviews and merges. The PR history *is* the corrections log.
-- Promotion to a permanent rule is a separate PR, once the same correction
+- On yes, it commits `learnings/YYYY-MM-DD-slug.md` straight to `main` and
+  pushes — no branch, no PR. Your confirmation in chat is the gate; the commit
+  history *is* the corrections log.
+- Promotion to a permanent rule is a later commit, once the same correction
   recurs *and* still clears the anti-bloat bar — recurrence flags a candidate,
   it doesn't auto-promote.
 

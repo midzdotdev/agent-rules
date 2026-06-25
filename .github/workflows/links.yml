@@ -1,9 +1,11 @@
 name: links
 
+# Entries commit straight to main (no PRs), so this can't gate — the pre-commit
+# hook (lychee --offline) is the gate. This runs after each push as an
+# external-link backstop on the backup remote, catching rot the offline hook can't.
 on:
   push:
     branches: [main]
-  pull_request:
 
 permissions:
   contents: read
