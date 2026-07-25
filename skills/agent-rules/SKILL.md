@@ -19,6 +19,7 @@ description: James's portable coding rules, preferences, and corrections log. Co
 ## Scoped
 
 - [`NODE_ENV` is not a deployment stage](rules/scoped/node-env.md)
+- [Harness ↔ GitHub-agent process](rules/scoped/github-agent-process.md)
 
 ## Learnings
 
