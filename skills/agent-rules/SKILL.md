@@ -26,6 +26,7 @@ description: James's portable coding rules, preferences, and corrections log. Co
 Not yet promoted to rules — apply when the topic matches.
 
 - [Prefer early returns over nested conditionals](learnings/2026-06-20-early-returns.md) — *code-style*
+- [Comments are for gotchas, not narration](learnings/2026-07-26-comments-gotchas-only.md) — *code-style*
 - [Always ship light + dark HTML artifacts, match system theme by default](learnings/2026-06-23-html-themes-match-system.md) — *html*
 - [Clean up after yourself](learnings/2026-06-25-cleanup-artifacts.md) — *workflow*
 
