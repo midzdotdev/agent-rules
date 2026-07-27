@@ -29,6 +29,7 @@ Not yet promoted to rules — apply when the topic matches.
 - [Comments are for gotchas, not narration](learnings/2026-07-26-comments-gotchas-only.md) — *code-style*
 - [Always ship light + dark HTML artifacts, match system theme by default](learnings/2026-06-23-html-themes-match-system.md) — *html*
 - [Clean up after yourself](learnings/2026-06-25-cleanup-artifacts.md) — *workflow*
+- [Prove the subject exists before asserting on it](learnings/2026-07-27-assertions-that-cannot-fail.md) — *testing*
 
 ## See also
 
