@@ -68,6 +68,33 @@ are unused. GitHub default labels are deleted.
    it (PR authored as James — the deliberate checkpoint), runs `@claude` rounds
    for fixes to agent work, merges; the ticket auto-closes.
 
+## Declaring blockers — native dependencies, not prose
+
+A blocker is declared with a **native GitHub issue dependency**. A `## Blocked
+by` body section is the human-readable restatement of it, never the record
+itself. Prose alone is invisible to tooling, to the dispatch frontier, and to
+any dependency graph built over the tracker.
+
+Set one whenever you create or triage a ticket with a real blocker — creating
+the issue and leaving the dependency for later is how the two drift.
+
+```bash
+gh api repos/<owner>/<repo>/issues/<N>/dependencies/blocked_by --jq '[.[].number]|join(",")'
+# issue_id is the blocker's DATABASE id, not its issue number:
+gh api -X POST repos/<owner>/<repo>/issues/<N>/dependencies/blocked_by \
+  -F issue_id="$(gh api repos/<owner>/<repo>/issues/<BLOCKER> --jq .id)"
+```
+
+**Only genuine blockers.** The work cannot start, or would be wasted, until the
+other lands — a ticket upgrading a dependency another ticket introduces. Two
+tickets that merely touch the same file are **sequencing**, not a dependency:
+either could go first, so that belongs in prose. Erring permissive is worse
+than a gap, because a false dependency reports work as blocked when it is not,
+and stalls frontier advancement.
+
+Keep the two in sync in both directions: when prose says a blocker is
+satisfied, the native dependency should be gone.
+
 ## Deferred extensions (recorded, not built)
 
 Issue-comment-responsive agent (async grilling on GitHub); frontier
