@@ -19,10 +19,11 @@ First wired in `midzdotdev/issue-atlas`; the workflow will extract to
   agent-forbidden anyway), reviewing James's own work pre-push (`/code-review`).
 - **Dispatch agent**: executing a fully-specified ticket, and pushing fixes in
   response to `@claude` PR comments.
-- **James never posts GitHub comments from local sessions** — they'd publish as
-  James. The dispatch agent (`claude[bot]`) is the only GitHub reply surface.
-  Creating issues and editing issue bodies locally is fine: tickets are James's
-  words. Chat is the local reply surface.
+- **A local session may post GitHub comments** (2026-08-13). They publish under
+  James's identity, and that is accepted — the earlier prohibition is withdrawn.
+  The dispatch agent (`claude[bot]`) remains the reply surface for `@claude`
+  rounds on its own PRs, but it is no longer the *only* one. Creating issues and
+  editing issue bodies locally was always fine and still is.
 
 ## Two label axes — state ≠ trigger
 
